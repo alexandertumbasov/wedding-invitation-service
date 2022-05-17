@@ -8,5 +8,5 @@ import (
 func main() {
 	app := fiber.New()
 
-	log.Fatal(app.Listen(":6060"))
+	log.Fatal(app.Listen(":6061"))
 }
