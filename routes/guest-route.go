@@ -7,4 +7,5 @@ import (
 
 func GuestRoute(app *fiber.App) {
 	app.Post("/guest", controllers.CreateGuest)
+	app.Delete("/guest/:guestId", controllers.DeleteUser)
 }
