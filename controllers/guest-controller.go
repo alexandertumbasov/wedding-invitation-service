@@ -65,7 +65,7 @@ func DeleteUser(c *fiber.Ctx) error {
 			responses.UserResponse{Status: http.StatusNotFound, Message: "error", Data: &fiber.Map{"data": fmt.Sprintf("User with specified %d not found!", objId)}},
 		)
 	}
-
+	fmt.Println("Hello")
 	return c.Status(http.StatusOK).JSON(
 		responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"data": "User successfully deleted!"}},
 	)

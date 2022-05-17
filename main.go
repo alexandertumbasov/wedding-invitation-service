@@ -11,5 +11,5 @@ func main() {
 
 	routes.GuestRoute(app)
 
-	log.Fatal(app.Listen(":6060"))
+	log.Fatal(app.Listen("127.0.0.1:8080"))
 }
