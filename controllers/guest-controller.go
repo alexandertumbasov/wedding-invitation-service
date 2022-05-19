@@ -17,6 +17,34 @@ import (
 var guestsCollection = configs.GetCollection(configs.DB, "guests")
 var validate = validator.New()
 
+func GetGuests(c *fiber.Ctx) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	var guests []models.Guest
+	defer cancel()
+
+	results, err := guestsCollection.Find(ctx, bson.M{})
+
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+	}
+
+	defer results.Close(ctx)
+
+	for results.Next(ctx) {
+		var singleGuest models.Guest
+
+		if err = results.Decode(&singleGuest); err != nil {
+			return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+		}
+
+		guests = append(guests, singleGuest)
+	}
+	return c.Status(http.StatusOK).JSON(
+		responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"data": guests}},
+	)
+
+}
+
 func CreateGuest(c *fiber.Ctx) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	var guest models.Guest
